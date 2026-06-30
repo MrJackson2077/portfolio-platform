@@ -1,7 +1,15 @@
 'use client';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Globe, Eye, EyeOff, Check, RefreshCw, Sparkles, Monitor, Tablet, Smartphone, GripVertical, ChevronDown, ChevronUp } from 'lucide-react';
+import { Globe, Eye, EyeOff, Check, RefreshCw, Sparkles, Monitor, Tablet, Smartphone, GripVertical } from 'lucide-react';
+
+// ── Block content types (replaces `as any`) ───────────────────
+interface HeroContent   { name: string; headline: string; subheadline?: string; ctaText?: string; }
+interface AboutContent  { title: string; body: string; highlights?: string[]; }
+interface ProjectsContent { title: string; subtitle?: string; }
+interface SkillCategory { name: string; skills: string[]; }
+interface SkillsContent  { title: string; categories?: SkillCategory[]; }
+interface ContactContent { title: string; body?: string; email?: string; }
 import { AppLayout } from '@/components/layout/AppLayout';
 import { AppProvider, useApp } from '@/context/AppContext';
 import { ToastProvider, useToast } from '@/components/ui/Toast';
@@ -135,7 +143,7 @@ function EditorContent() {
             <div style={{ fontFamily: 'Inter, sans-serif' }}>
               {/* Hero */}
               {blocks.find(b => b.blockType === 'hero')?.visible && (() => {
-                const c = blocks.find(b => b.blockType === 'hero')!.content as any;
+                const c = blocks.find(b => b.blockType === 'hero')!.content as HeroContent;
                 return (
                   <div style={{ padding: '60px 40px', background: 'linear-gradient(135deg, hsl(246 83% 12%), hsl(225 22% 8%))', textAlign: 'center' }}>
                     <div style={{ width: 72, height: 72, borderRadius: 99, background: 'var(--brand-gradient)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: 28, fontWeight: 900, color: 'white' }}>AM</div>
@@ -148,7 +156,7 @@ function EditorContent() {
               })()}
               {/* About */}
               {blocks.find(b => b.blockType === 'about')?.visible && (() => {
-                const c = blocks.find(b => b.blockType === 'about')!.content as any;
+                const c = blocks.find(b => b.blockType === 'about')!.content as AboutContent;
                 return (
                   <div style={{ padding: '48px 40px', borderBottom: '1px solid hsl(225 14% 14%)' }}>
                     <h2 style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 14 }}>{c.title}</h2>
@@ -161,7 +169,7 @@ function EditorContent() {
               })()}
               {/* Projects */}
               {blocks.find(b => b.blockType === 'project_collection')?.visible && (() => {
-                const c = blocks.find(b => b.blockType === 'project_collection')!.content as any;
+                const c = blocks.find(b => b.blockType === 'project_collection')!.content as ProjectsContent;
                 return (
                   <div id="projects" style={{ padding: '48px 40px', borderBottom: '1px solid hsl(225 14% 14%)' }}>
                     <h2 style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 6 }}>{c.title}</h2>
@@ -183,12 +191,12 @@ function EditorContent() {
               })()}
               {/* Skills */}
               {blocks.find(b => b.blockType === 'skills')?.visible && (() => {
-                const c = blocks.find(b => b.blockType === 'skills')!.content as any;
+                const c = blocks.find(b => b.blockType === 'skills')!.content as SkillsContent;
                 return (
                   <div style={{ padding: '48px 40px', borderBottom: '1px solid hsl(225 14% 14%)' }}>
                     <h2 style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 20 }}>{c.title}</h2>
                     <div style={{ display: 'grid', gridTemplateColumns: preview === 'mobile' ? '1fr' : 'repeat(3, 1fr)', gap: 16 }}>
-                      {c.categories?.map((cat: any) => (
+                      {c.categories?.map((cat: SkillCategory) => (
                         <div key={cat.name} style={{ background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)', borderRadius: 10, padding: 16 }}>
                           <h4 style={{ fontSize: 12, fontWeight: 700, color: 'var(--brand-primary)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 10 }}>{cat.name}</h4>
                           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
@@ -202,7 +210,7 @@ function EditorContent() {
               })()}
               {/* Contact */}
               {blocks.find(b => b.blockType === 'contact')?.visible && (() => {
-                const c = blocks.find(b => b.blockType === 'contact')!.content as any;
+                const c = blocks.find(b => b.blockType === 'contact')!.content as ContactContent;
                 return (
                   <div style={{ padding: '48px 40px', textAlign: 'center' }}>
                     <h2 style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 8 }}>{c.title}</h2>

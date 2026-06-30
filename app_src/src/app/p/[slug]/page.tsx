@@ -3,6 +3,13 @@ import { notFound } from 'next/navigation';
 import { MOCK_PORTFOLIO, MOCK_PROFILE, MOCK_PROJECTS } from '@/lib/mock-data';
 import { Mail, Globe, GitBranch, Link2, ExternalLink } from 'lucide-react';
 
+// ── Block content types ───────────────────────────────────
+interface HeroContent    { name: string; headline: string; subheadline?: string; ctaText?: string; }
+interface AboutContent   { title: string; body: string; highlights?: string[]; }
+interface SkillCategory  { name: string; skills: string[]; }
+interface SkillsContent  { title: string; categories?: SkillCategory[]; }
+interface ContactContent { title: string; body?: string; email?: string; }
+
 export const metadata: Metadata = {
   title: 'Alex Morgan — Full-Stack Engineer',
   description: 'Portfolio of Alex Morgan, a full-stack engineer specializing in React and Node.js.',
@@ -17,10 +24,10 @@ export default function PublicPortfolioPage({ params }: { params: { slug: string
   const blocks = p.blocks.filter(b => b.visible);
 
   const getBlock = (type: string) => blocks.find(b => b.blockType === type);
-  const hero = getBlock('hero')?.content as any;
-  const about = getBlock('about')?.content as any;
-  const skills = getBlock('skills')?.content as any;
-  const contact = getBlock('contact')?.content as any;
+  const hero    = getBlock('hero')?.content    as HeroContent    | undefined;
+  const about   = getBlock('about')?.content   as AboutContent   | undefined;
+  const skills  = getBlock('skills')?.content  as SkillsContent  | undefined;
+  const contact = getBlock('contact')?.content as ContactContent | undefined;
 
   return (
     <div style={{ minHeight: '100vh', background: 'hsl(225 22% 6%)', fontFamily: 'Inter, -apple-system, sans-serif' }}>
@@ -109,7 +116,7 @@ export default function PublicPortfolioPage({ params }: { params: { slug: string
           <section style={{ padding: '64px 0', borderBottom: '1px solid hsl(225 14% 13%)' }}>
             <h2 style={{ fontSize: 28, fontWeight: 800, color: 'hsl(220 20% 96%)', marginBottom: 24, letterSpacing: '-0.02em' }}>{skills.title}</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16 }}>
-              {skills.categories?.map((cat: any) => (
+              {skills.categories?.map((cat: SkillCategory) => (
                 <div key={cat.name} style={{ background: 'hsl(225 16% 10%)', border: '1px solid hsl(225 12% 16%)', borderRadius: 12, padding: 20 }}>
                   <h4 style={{ fontSize: 11, fontWeight: 700, color: 'hsl(246 83% 72%)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 12 }}>{cat.name}</h4>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>

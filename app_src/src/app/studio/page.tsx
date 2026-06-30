@@ -1,31 +1,36 @@
 'use client';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Trash2, Edit2, Eye, EyeOff, Upload, Link2, User, FolderOpen } from 'lucide-react';
+import { Plus, Trash2, Eye, EyeOff, Upload, User, FolderOpen } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { AppProvider, useApp } from '@/context/AppContext';
 import { ToastProvider, useToast } from '@/components/ui/Toast';
 import { Modal } from '@/components/ui/Modal';
-import { formatBytes, formatDate } from '@/lib/mock-data';
+import { formatBytes } from '@/lib/mock-data';
+
+interface ProfileForm {
+  fullName: string; headline: string; bio: string; location: string;
+  primaryRole: string; email: string; website: string; linkedin: string; github: string;
+}
 
 function ProfileTab() {
   const { state, setProfile } = useApp();
   const toast = useToast();
-  const [form, setForm] = useState(state.profile || { fullName: '', headline: '', bio: '', location: '', primaryRole: '', email: '', website: '', linkedin: '', github: '' });
+  const [form, setForm] = useState<ProfileForm>(state.profile as ProfileForm || { fullName: '', headline: '', bio: '', location: '', primaryRole: '', email: '', website: '', linkedin: '', github: '' });
   const [saving, setSaving] = useState(false);
 
   const save = async () => {
     setSaving(true);
     await new Promise(r => setTimeout(r, 800));
-    setProfile(form as any);
+    setProfile(form as Parameters<typeof setProfile>[0]);
     toast('Profile saved!', 'success');
     setSaving(false);
   };
 
-  const field = (label: string, key: string, type = 'text', placeholder = '') => (
+  const field = (label: string, key: keyof ProfileForm, type = 'text', placeholder = '') => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
       <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>{label}</label>
-      <input type={type} value={(form as any)[key] || ''} placeholder={placeholder}
+      <input type={type} value={form[key] || ''} placeholder={placeholder}
         onChange={e => setForm(p => ({ ...p, [key]: e.target.value }))}
         style={{ width: '100%', background: 'var(--surface-overlay)', border: '1px solid var(--border-default)', borderRadius: 8, padding: '10px 14px', fontSize: 14, color: 'var(--text-primary)', outline: 'none', transition: 'border-color 0.15s, box-shadow 0.15s' }}
         onFocus={e => { e.target.style.borderColor = 'var(--brand-primary)'; e.target.style.boxShadow = '0 0 0 3px var(--brand-primary-glow)'; }}
@@ -44,7 +49,7 @@ function ProfileTab() {
         {field('Headline', 'headline', 'text', 'Full-Stack Engineer & Product Builder')}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 16 }}>
           <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>Bio</label>
-          <textarea value={(form as any).bio || ''} rows={4} placeholder="Tell your story..."
+          <textarea value={form.bio || ''} rows={4} placeholder="Tell your story..."
             onChange={e => setForm(p => ({ ...p, bio: e.target.value }))}
             style={{ width: '100%', background: 'var(--surface-overlay)', border: '1px solid var(--border-default)', borderRadius: 8, padding: '10px 14px', fontSize: 14, color: 'var(--text-primary)', outline: 'none', resize: 'vertical', fontFamily: 'inherit', transition: 'border-color 0.15s, box-shadow 0.15s' }}
             onFocus={e => { e.target.style.borderColor = 'var(--brand-primary)'; e.target.style.boxShadow = '0 0 0 3px var(--brand-primary-glow)'; }}
@@ -81,7 +86,7 @@ function ProjectsTab() {
     toast('Project added!', 'success');
   };
 
-  const confColor = { public: 'var(--success)', redact: 'var(--warning)', private: 'var(--error)' } as any;
+  const confColor: Record<string, string> = { public: 'var(--success)', redact: 'var(--warning)', private: 'var(--error)' };
 
   return (
     <div>
@@ -118,7 +123,7 @@ function ProjectsTab() {
           {[['Project Title', 'title', 'ClearFlow Dashboard'], ['Your Role', 'role', 'Lead Frontend Engineer'], ['Start Date', 'startDate', '2024-03'], ['End Date (optional)', 'endDate', '2024-11']].map(([label, key, ph]) => (
             <div key={key} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               <label style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>{label}</label>
-              <input value={(form as any)[key]} onChange={e => setForm(p => ({ ...p, [key]: e.target.value }))} placeholder={ph}
+              <input value={(form as Record<string, string>)[key] ?? ''} onChange={e => setForm(p => ({ ...p, [key]: e.target.value }))} placeholder={ph}
                 style={{ width: '100%', background: 'var(--surface-overlay)', border: '1px solid var(--border-default)', borderRadius: 8, padding: '10px 14px', fontSize: 14, color: 'var(--text-primary)', outline: 'none' }}
                 onFocus={e => { e.target.style.borderColor = 'var(--brand-primary)'; e.target.style.boxShadow = '0 0 0 3px var(--brand-primary-glow)'; }}
                 onBlur={e => { e.target.style.borderColor = 'var(--border-default)'; e.target.style.boxShadow = 'none'; }} />

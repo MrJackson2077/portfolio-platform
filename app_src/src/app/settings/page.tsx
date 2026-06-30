@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { User, Bell, Shield, Trash2, Download, Moon, Sun } from 'lucide-react';
+import { User, Bell, Shield, Trash2, Download } from 'lucide-react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { AppProvider, useApp } from '@/context/AppContext';
 import { ToastProvider, useToast } from '@/components/ui/Toast';

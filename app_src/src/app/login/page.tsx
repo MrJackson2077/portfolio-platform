@@ -126,7 +126,7 @@ export default function LoginPage() {
         </div>
 
         <p style={{ textAlign: 'center', marginTop: 20, fontSize: 14, color: 'var(--text-muted)' }}>
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link href="/signup" style={{ color: 'var(--brand-primary)', fontWeight: 600 }}>Create one free</Link>
         </p>
       </motion.div>
