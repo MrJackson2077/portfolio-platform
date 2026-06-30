@@ -50,7 +50,10 @@ portfolio-platform/
 │   └── package.json
 │
 ├── controllers/
-│   └── AuthController.js   # Auth logic: register, login, logout, refresh, reset
+│   └── AuthController.js   # HTTP handlers — thin layer, delegates to services
+│
+├── services/
+│   └── userService.js      # Business logic: user CRUD, passwords, tokens, audit
 │
 ├── database/
 │   └── db.js               # PostgreSQL connection pool + query helpers + schema
@@ -71,6 +74,20 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
+
+### Backend Architecture
+
+The backend follows a three-layer separation of concerns:
+
+```
+HTTP Request
+    ↓
+Controller  (controllers/)   — parse request, validate shape, send response
+    ↓
+Service     (services/)      — business logic, rules, orchestration
+    ↓
+Database    (database/)      — SQL queries, connection pool
+```
 
 ### Backend (coming in Phase 2)
 
