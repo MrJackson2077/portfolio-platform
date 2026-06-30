@@ -58,6 +58,9 @@ portfolio-platform/
 ├── database/
 │   └── db.js               # PostgreSQL connection pool + query helpers + schema
 │
+├── docs/
+│   └── ai_prompt_log.md    # All AI prompt templates, example inputs, and sample outputs
+│
 └── README.md
 ```
 
