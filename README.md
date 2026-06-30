@@ -59,7 +59,8 @@ portfolio-platform/
 │   └── db.js               # PostgreSQL connection pool + query helpers + schema
 │
 ├── docs/
-│   └── ai_prompt_log.md    # All AI prompt templates, example inputs, and sample outputs
+│   ├── ai_prompt_log.md        # AI prompt templates, schemas, example I/O per model
+│   └── agent_session_log.md    # Full log of every user↔agent exchange in this session
 │
 └── README.md
 ```
